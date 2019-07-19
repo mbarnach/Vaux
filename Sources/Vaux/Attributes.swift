@@ -21,6 +21,7 @@ extension HTML {
   /// - Parameters:
   ///   - key: The tag for the attribute that will be added to this HTML node
   ///   - value: The value that will be associated with the tag.
+  /// - Tag: attr
   public func attr(_ key: String, _ value: String? = nil) -> HTML {
     return AttributedNode(attribute: Attribute(key: key, value: value),
                           child: self)
@@ -100,13 +101,11 @@ extension HTML {
   ///   - attributes: An array of structs typed `StyleAttribute` that contain a key and value for inline styling.
   public func style(_ attributes: [StyleAttribute]) -> HTML {
     var inlineStyle = String()
-    for (index, attribute) in attributes.enumerated() {
+    for attribute in attributes {
       inlineStyle.write(attribute.key)
       inlineStyle.write(":")
       inlineStyle.write(attribute.value)
-      if index == 0, attributes.count > 1, index != attributes.count - 1 {
-        inlineStyle.write(";")
-      }
+      inlineStyle.write(";")
     }
     return attr("style", inlineStyle)
   }

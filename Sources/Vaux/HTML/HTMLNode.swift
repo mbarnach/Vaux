@@ -68,13 +68,13 @@ struct HTMLNode: HTML {
 
 // MARK: - Concatenative HTML Attributes
 public struct Attribute {
-  let key: String
-  let value: String?
+  public let key: String
+  public let value: String?
 }
 
 public struct StyleAttribute {
-  let key: String
-  let value: String
+  public let key: String
+  public let value: String
 }
 
 /// Wraps an HTML object with a given attribute. these attributes are collected
@@ -108,5 +108,24 @@ struct MultiNode: HTML {
     for child in children {
       child.renderAsHTML(into: stream, attributes: attributes)
     }
+  }
+}
+
+public struct TableColumnStyle {
+  public let span: Int?
+  public let styles: [StyleAttribute]
+  
+  public init(span: Int? = nil, styles: [StyleAttribute]) {
+    self.span = span
+    self.styles = styles
+  }
+}
+
+extension HTML {
+  func column(from styles: TableColumnStyle) -> HTML {
+    if let span = styles.span {
+      return style(styles.styles).attr("span", "\(span)")
+    }
+    return style(styles.styles)
   }
 }
